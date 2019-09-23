@@ -17,16 +17,8 @@ class Nick extends PluginBase {
   public $prefix;
   
   public function onLoad(){
-    $this->saveDefaultConfig();
-    $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-    $this->prefix = $this->config->get("prefix");
-    if(!$this->config->get("ver")){
-      $ver = $this->getDescription()->getVersion();
-      $this->config->set("ver", $ver);
-      $this->config->save();
-      $this->config->reload();
-    }
-  }
+    $this->prefix = $this->getConfig()->get("prefix")
+  } 
     
   public function onJoin(PlayerJoinEvent $event){
     $player = $event->getPlayer();
@@ -38,14 +30,14 @@ class Nick extends PluginBase {
   }
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool{
         if($command->getName() === "nick") {
-            if($args[0] != null){
+            if(isset($args[0])){
                 $sender->sendMessage($this->prefix . 'Dein Nickname ist ' . $args[0]);
                 $playerfile = new Config($this->getDataFolder() . $sender->getName() . ".yml", Config::YAML);
                 $sender->setDisplayName($args[0]);
                 $playerfile->set("nick", $args[0]);
                 $playerfile->save();
             }
-            elseif($args[0] == null){
+            elseif(!isset($args[0])){
                 $sender->sendMessage($this->prefix . 'Usage: /nick <Gewünschter Nickname>');
             }
             return true;
