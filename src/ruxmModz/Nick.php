@@ -17,7 +17,7 @@ class Nick extends PluginBase {
   public $prefix;
   
   public function onLoad(){
-    $this->prefix = $this->getConfig()->get("prefix")
+    $this->prefix = $this->getConfig()->get("prefix");
   } 
     
   public function onJoin(PlayerJoinEvent $event){
